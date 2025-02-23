@@ -1,0 +1,111 @@
+const PETS = [
+  {
+    name: "Busky",
+    race: "American",
+    type: "Alaskan Malamute",
+    sex: "Male",
+    location: "Lagos, Nigeria",
+    photo: "/Malamute.jpg",
+    id: 1011,
+    isAdopted: false,
+  },
+
+  {
+    name: "Parilo",
+    race: "Asian",
+    type: "Tibetan Mastiff",
+    sex: "Female",
+    location: "Abuja, Nigeria",
+    photo: "/Tibetan Mastiff.jpg",
+    id: 1012,
+    isAdopted: false,
+  },
+
+  {
+    name: "Danilo",
+    race: "European",
+    type: "German Shepherd",
+    sex: "Male",
+    location: "Lagos, Nigeria",
+    photo: "/German Shepherd.jpg",
+    id: 1013,
+    isAdopted: false,
+  },
+
+  {
+    name: "Larson",
+    race: "African",
+    type: "Rhodesian Ridgeback",
+    sex: "Female",
+    location: "Jos, Nigeria",
+    photo: "/Rhodesian Ridgeback.jpg",
+    id: 1014,
+    isAdopted: false,
+  },
+
+  {
+    name: "Muller",
+    race: "Asian",
+    type: "Shiba Inu",
+    sex: "Male",
+    location: "Abuja, Nigeria",
+    photo: "/Shiba Inu.png",
+    id: 1015,
+    isAdopted: false,
+  },
+  {
+    name: "Lallana",
+    race: "European",
+    type: "Border Collie ",
+    sex: "Male",
+    location: "Port-Harcourt, Nigeria",
+    photo: "/Border Collie.jpg",
+    id: 1016,
+    isAdopted: false,
+  },
+  {
+    name: "Vento",
+    race: "Middle Eastern",
+    type: "Kangal Shepherd",
+    sex: "Female",
+    location: "Owerri, Nigeria",
+    photo: "/Kangal Shepherd.jpg",
+    id: 1017,
+    isAdopted: false,
+  },
+
+  {
+    name: "Captain Jack",
+    race: "American",
+    type: "Labrador Retriever",
+    sex: "Female",
+    location: "Kano, Nigeria",
+    photo: "/Labrador Retriever.jpg",
+    id: 1018,
+    isAdopted: false,
+  },
+
+  {
+    name: "Labister",
+    race: "European",
+    type: "French Bulldog",
+    sex: "Female",
+    location: "Owerri, Nigeria",
+    photo: "/French Bulldog.jpg",
+    id: 1019,
+    isAdopted: false,
+  },
+
+  {
+    name: "Bentley",
+    race: "African",
+    type: "Boerboel",
+    sex: "Male",
+    location: "Port-Harcourt, Nigeria",
+    photo: "/Boerboel.jpg",
+    id: 1020,
+    isAdopted: false,
+  },
+];
+
+export { PETS };
