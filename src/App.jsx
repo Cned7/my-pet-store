@@ -1,8 +1,9 @@
-import React from "react";
-import { useState } from "react";
-import "./index.css";
-import PetList from "./components/PetList";
-import { PETS } from "./components/data";
+import React, { useState } from "react";
+import "./index.css"; // Custom styles
+import PetList from "./components/PetList"; // Pet list component
+import { PETS } from "./components/data"; // Pet data array
+
+// MUI components
 import {
   Select,
   OutlinedInput,
@@ -12,32 +13,30 @@ import {
   MenuItem,
 } from "@mui/material";
 
-function getStyles(type, petType, theme) {
+// Function to apply custom styles to menu items
+function getStyles(type, selectedType, theme) {
   return {
-    fontWeight: petType.includes(type)
-      ? theme.typography.fontWeightMedium
-      : theme.typography.fontWeightRegular,
+    fontWeight:
+      selectedType === type
+        ? theme.typography.fontWeightMedium
+        : theme.typography.fontWeightRegular,
   };
 }
 
 function App() {
-  const [myPetStore, setMyPetStore] = useState(PETS);
-  const theme = useTheme();
-  const [petType, setPetType] = React.useState([]);
+  const [myPetStore, setMyPetStore] = useState(PETS); // Main pet data
+  const theme = useTheme(); // MUI theme
+  const [selectedType, setSelectedType] = useState(""); // For dropdown selection
 
-  // To handle pets adoption
-
+  // Handle pet adoption (update isAdopted flag)
   const handlePetAdoption = (pet_id) => {
-    let updatedPets = myPetStore.map((value) => {
-      if (value.id === pet_id) {
-        value.isAdopted = true;
-      }
-      return value;
-    });
-
+    const updatedPets = myPetStore.map((pet) =>
+      pet.id === pet_id ? { ...pet, isAdopted: true } : pet
+    );
     setMyPetStore(updatedPets);
   };
 
+  // Dropdown menu props for MUI select
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -49,6 +48,7 @@ function App() {
     },
   };
 
+  // Pet types for dropdown
   const types = [
     "Alaskan Malamute",
     "Tibetan Mastiff",
@@ -62,40 +62,37 @@ function App() {
     "Boerboel",
   ];
 
-  // To handle pet type filering
-
-  const handlePetTypeFilter = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPetType(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
+  // Filter pets based on selected type
+  const filteredPets = selectedType
+    ? myPetStore.filter((pet) => pet.type === selectedType)
+    : myPetStore;
 
   return (
     <div className="mt-10 mx-auto">
       <h1 className="md:text-2xl lg:text-4xl text-purple-950 text-center font-bold mb-5">
         CNED PET STORES
       </h1>
+
+      {/* Dropdown filter */}
       <div className="container mx-auto bg-purple-500">
         <FormControl sx={{ m: 2, width: 285, float: "right" }}>
-          <InputLabel id="demo-multiple-name-label">Pet Type</InputLabel>
+          <InputLabel id="single-select-label">Pet Type</InputLabel>
           <Select
-            labelId="demo-multiple-name-label"
-            id="demo-multiple-name"
-            multiple
-            value={petType}
-            onChange={handlePetTypeFilter}
-            input={<OutlinedInput label="Name" />}
+            labelId="single-select-label"
+            id="single-select"
+            value={selectedType}
+            onChange={(e) => setSelectedType(e.target.value)}
+            input={<OutlinedInput label="Pet Type" />}
             MenuProps={MenuProps}
           >
+            <MenuItem value="">
+              <em>All Pets</em>
+            </MenuItem>
             {types.map((type) => (
               <MenuItem
                 key={type}
                 value={type}
-                style={getStyles(type, petType, theme)}
+                style={getStyles(type, selectedType, theme)}
               >
                 {type}
               </MenuItem>
@@ -103,10 +100,23 @@ function App() {
           </Select>
         </FormControl>
       </div>
+
+      {/* Pet List Component */}
       <PetList
         handlePetAdoption={handlePetAdoption}
-        petsToDisplay={myPetStore}
+        petsToDisplay={filteredPets}
       />
+
+      {/* Display filtered pets directly */}
+      <ul>
+        {filteredPets.length > 0 ? (
+          filteredPets.map((pet) => (
+            <li key={pet.id}>{pet.isAdopted ? "(Adopted)" : ""}</li>
+          ))
+        ) : (
+          <li>No pets found</li>
+        )}
+      </ul>
     </div>
   );
 }
