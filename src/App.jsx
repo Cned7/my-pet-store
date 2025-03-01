@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import "./index.css"; // Custom styles
-import PetList from "./components/PetList"; // Pet list component
-import { PETS } from "./components/data"; // Pet data array
-
-// MUI components
+import "./index.css";
+import PetList from "./components/PetList";
+import { PETS } from "./components/data";
 import {
   Select,
   OutlinedInput,
@@ -13,22 +11,21 @@ import {
   MenuItem,
 } from "@mui/material";
 
-// Function to apply custom styles to menu items
-function getStyles(type, selectedType, theme) {
+function getStyles(option, selectedOption, theme) {
   return {
     fontWeight:
-      selectedType === type
+      selectedOption === option
         ? theme.typography.fontWeightMedium
         : theme.typography.fontWeightRegular,
   };
 }
 
 function App() {
-  const [myPetStore, setMyPetStore] = useState(PETS); // Main pet data
-  const theme = useTheme(); // MUI theme
-  const [selectedType, setSelectedType] = useState(""); // For dropdown selection
+  const [myPetStore, setMyPetStore] = useState(PETS);
+  const theme = useTheme();
+  const [selectedType, setSelectedType] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
 
-  // Handle pet adoption (update isAdopted flag)
   const handlePetAdoption = (pet_id) => {
     const updatedPets = myPetStore.map((pet) =>
       pet.id === pet_id ? { ...pet, isAdopted: true } : pet
@@ -36,7 +33,6 @@ function App() {
     setMyPetStore(updatedPets);
   };
 
-  // Dropdown menu props for MUI select
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -48,7 +44,6 @@ function App() {
     },
   };
 
-  // Pet types for dropdown
   const types = [
     "Alaskan Malamute",
     "Tibetan Mastiff",
@@ -62,10 +57,48 @@ function App() {
     "Boerboel",
   ];
 
-  // Filter pets based on selected type
-  const filteredPets = selectedType
-    ? myPetStore.filter((pet) => pet.type === selectedType)
-    : myPetStore;
+  const locations = [
+    "Lagos, Nigeria",
+    "Abuja, Nigeria",
+    "Jos, Nigeria",
+    "Port-Harcourt, Nigeria",
+    "Kano, Nigeria",
+    "Owerri, Nigeria",
+  ];
+
+  // Refactored filtering logic using switch
+  const filteredPets = myPetStore.filter((pet) => {
+    let matchesType = true;
+    let matchesLocation = true;
+
+    switch (true) {
+      case selectedType !== "" && pet.type === selectedType:
+        matchesType = true;
+        break;
+      case selectedType !== "" && pet.type !== selectedType:
+        matchesType = false;
+        break;
+      default:
+        matchesType = selectedType === "";
+    }
+
+    switch (true) {
+      case selectedLocation !== "" &&
+        pet.location.trim().toLowerCase() ===
+          selectedLocation.trim().toLowerCase():
+        matchesLocation = true;
+        break;
+      case selectedLocation !== "" &&
+        pet.location.trim().toLowerCase() !==
+          selectedLocation.trim().toLowerCase():
+        matchesLocation = false;
+        break;
+      default:
+        matchesLocation = selectedLocation === "";
+    }
+
+    return matchesType && matchesLocation;
+  });
 
   return (
     <div className="mt-10 mx-auto">
@@ -73,20 +106,21 @@ function App() {
         CNED PET STORES
       </h1>
 
-      {/* Dropdown filter */}
-      <div className="container mx-auto bg-purple-500">
-        <FormControl sx={{ m: 2, width: 285, float: "right" }}>
-          <InputLabel id="single-select-label">Pet Type</InputLabel>
+      {/* Dropdown Filters */}
+      <div className=" mx-auto container flex flex-wrap gap-4 mb-6 justify-center lg:justify-end">
+        {/* Pet Type Filter */}
+        <FormControl sx={{ width: 250 }}>
+          <InputLabel id="pet-type-label">Pet Type</InputLabel>
           <Select
-            labelId="single-select-label"
-            id="single-select"
+            labelId="pet-type-label"
+            id="pet-type-select"
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
             input={<OutlinedInput label="Pet Type" />}
             MenuProps={MenuProps}
           >
             <MenuItem value="">
-              <em>All Pets</em>
+              <em>All Types</em>
             </MenuItem>
             {types.map((type) => (
               <MenuItem
@@ -99,6 +133,32 @@ function App() {
             ))}
           </Select>
         </FormControl>
+
+        {/* Location Filter */}
+        <FormControl sx={{ width: 250 }}>
+          <InputLabel id="location-label">Location</InputLabel>
+          <Select
+            labelId="location-label"
+            id="location-select"
+            value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)}
+            input={<OutlinedInput label="Location" />}
+            MenuProps={MenuProps}
+          >
+            <MenuItem value="">
+              <em>All Locations</em>
+            </MenuItem>
+            {locations.map((loc) => (
+              <MenuItem
+                key={loc}
+                value={loc}
+                style={getStyles(loc, selectedLocation, theme)}
+              >
+                {loc}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </div>
 
       {/* Pet List Component */}
@@ -107,8 +167,8 @@ function App() {
         petsToDisplay={filteredPets}
       />
 
-      {/* Display filtered pets directly */}
-      <ul>
+      {/* Display filtered pets */}
+      <ul className="mt-4 text-center">
         {filteredPets.length > 0 ? (
           filteredPets.map((pet) => (
             <li key={pet.id}>{pet.isAdopted ? "(Adopted)" : ""}</li>

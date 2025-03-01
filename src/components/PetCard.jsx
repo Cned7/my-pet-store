@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { PETS } from "./data";
+import AddPet from "./AddPet";
 
 import React from "react";
 
@@ -53,7 +54,7 @@ function PetCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <AddPet />
         <Button
           size="small"
           color="success"
