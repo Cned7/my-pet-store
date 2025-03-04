@@ -101,83 +101,85 @@ function App() {
   });
 
   return (
-    <div className="mt-10 mx-auto">
-      <h1 className="md:text-2xl lg:text-4xl text-purple-950 text-center font-bold mb-5">
-        CNED PET STORES
-      </h1>
+    <>
+      <div className="mt-20 mx-auto">
+        <h1 className="md:text-2xl lg:text-4xl text-purple-950 text-center font-bold m-5">
+          CNED PET STORES
+        </h1>
 
-      {/* Dropdown Filters */}
-      <div className=" mx-auto container flex flex-wrap gap-4 mb-6 justify-center lg:justify-end">
-        {/* Pet Type Filter */}
-        <FormControl sx={{ width: 250 }}>
-          <InputLabel id="pet-type-label">Pet Type</InputLabel>
-          <Select
-            labelId="pet-type-label"
-            id="pet-type-select"
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
-            input={<OutlinedInput label="Pet Type" />}
-            MenuProps={MenuProps}
-          >
-            <MenuItem value="">
-              <em>All Types</em>
-            </MenuItem>
-            {types.map((type) => (
-              <MenuItem
-                key={type}
-                value={type}
-                style={getStyles(type, selectedType, theme)}
-              >
-                {type}
+        {/* Dropdown Filters */}
+        <div className=" mx-auto container flex flex-wrap gap-4 mb-6 justify-center lg:justify-end">
+          {/* Pet Type Filter */}
+          <FormControl sx={{ width: 250 }}>
+            <InputLabel id="pet-type-label">Pet Type</InputLabel>
+            <Select
+              labelId="pet-type-label"
+              id="pet-type-select"
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+              input={<OutlinedInput label="Pet Type" />}
+              MenuProps={MenuProps}
+            >
+              <MenuItem value="">
+                <em>All Types</em>
               </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+              {types.map((type) => (
+                <MenuItem
+                  key={type}
+                  value={type}
+                  style={getStyles(type, selectedType, theme)}
+                >
+                  {type}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-        {/* Location Filter */}
-        <FormControl sx={{ width: 250 }}>
-          <InputLabel id="location-label">Location</InputLabel>
-          <Select
-            labelId="location-label"
-            id="location-select"
-            value={selectedLocation}
-            onChange={(e) => setSelectedLocation(e.target.value)}
-            input={<OutlinedInput label="Location" />}
-            MenuProps={MenuProps}
-          >
-            <MenuItem value="">
-              <em>All Locations</em>
-            </MenuItem>
-            {locations.map((loc) => (
-              <MenuItem
-                key={loc}
-                value={loc}
-                style={getStyles(loc, selectedLocation, theme)}
-              >
-                {loc}
+          {/* Location Filter */}
+          <FormControl sx={{ width: 250 }}>
+            <InputLabel id="location-label">Location</InputLabel>
+            <Select
+              labelId="location-label"
+              id="location-select"
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              input={<OutlinedInput label="Location" />}
+              MenuProps={MenuProps}
+            >
+              <MenuItem value="">
+                <em>All Locations</em>
               </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+              {locations.map((loc) => (
+                <MenuItem
+                  key={loc}
+                  value={loc}
+                  style={getStyles(loc, selectedLocation, theme)}
+                >
+                  {loc}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+
+        {/* Pet List Component */}
+        <PetList
+          handlePetAdoption={handlePetAdoption}
+          petsToDisplay={filteredPets}
+        />
+
+        {/* Display filtered pets */}
+        <ul className="mt-4 text-center">
+          {filteredPets.length > 0 ? (
+            filteredPets.map((pet) => (
+              <li key={pet.id}>{pet.isAdopted ? "(Adopted)" : ""}</li>
+            ))
+          ) : (
+            <li>No pets found</li>
+          )}
+        </ul>
       </div>
-
-      {/* Pet List Component */}
-      <PetList
-        handlePetAdoption={handlePetAdoption}
-        petsToDisplay={filteredPets}
-      />
-
-      {/* Display filtered pets */}
-      <ul className="mt-4 text-center">
-        {filteredPets.length > 0 ? (
-          filteredPets.map((pet) => (
-            <li key={pet.id}>{pet.isAdopted ? "(Adopted)" : ""}</li>
-          ))
-        ) : (
-          <li>No pets found</li>
-        )}
-      </ul>
-    </div>
+    </>
   );
 }
 
