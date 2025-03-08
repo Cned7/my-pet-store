@@ -20,6 +20,7 @@ function PetList(props) {
               location={item.location}
               isAdopted={item.isAdopted}
               handlePetAdoption={() => props.handlePetAdoption(item.id)}
+              petId={item.id}
             />
           );
         })}

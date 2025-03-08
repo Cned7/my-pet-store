@@ -10,6 +10,7 @@ import { PETS } from "./data";
 import AddPet from "./AddPet";
 
 import React from "react";
+import { Link } from "react-router";
 
 function PetCard(props) {
   return (
@@ -64,6 +65,13 @@ function PetCard(props) {
         >
           Adopt Pet
         </Button>
+
+        {/* Navigating to the dynamic page */}
+        <Link to={`/store/${props.petId}`}>
+          <Button size="small" color="success" variant="contained">
+            More details
+          </Button>
+        </Link>
       </CardActions>
     </Card>
   );

@@ -3,7 +3,7 @@ import React from "react";
 function Contact() {
   return (
     <>
-      <div className="mt-20 container mx-auto">
+      <div className="mt-20 container mx-auto" style={{ height: "100vh" }}>
         <form action="" className="flex flex-col mt-10">
           <label htmlFor="">Name:</label>
           <input type="text" />

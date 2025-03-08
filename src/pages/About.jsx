@@ -2,7 +2,7 @@ import React from "react";
 
 function About() {
   return (
-    <>
+    <main className="container mx-auto" style={{ height: "100vh" }}>
       <section className="container mx-auto mt-20">
         <h1 className="mb-4 text-green-800 text-2xl font-semibold mt-10">
           About CNED Pets
@@ -16,7 +16,7 @@ function About() {
           molestiae, eius et.
         </p>
       </section>
-    </>
+    </main>
   );
 }
 

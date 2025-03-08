@@ -1,185 +1,61 @@
-import React, { useState } from "react";
 import "./index.css";
-import PetList from "./components/PetList";
-import { PETS } from "./components/data";
-import {
-  Select,
-  OutlinedInput,
-  FormControl,
-  InputLabel,
-  useTheme,
-  MenuItem,
-} from "@mui/material";
+import { BrowserRouter, Routes, Route } from "react-router";
+import About from "./pages/About.jsx";
+import Contact from "./pages/Contact.jsx";
+import MainLayout from "./layouts/MainLayout.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import AccountSettings from "./pages/AccountSettings.jsx";
+import PetDetails from "./pages/PetDetails.jsx";
+import Store from "./pages/Store.jsx";
 
-function getStyles(option, selectedOption, theme) {
-  return {
-    fontWeight:
-      selectedOption === option
-        ? theme.typography.fontWeightMedium
-        : theme.typography.fontWeightRegular,
-  };
-}
+import React from "react";
 
 function App() {
-  const [myPetStore, setMyPetStore] = useState(PETS);
-  const theme = useTheme();
-  const [selectedType, setSelectedType] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
-
-  const handlePetAdoption = (pet_id) => {
-    const updatedPets = myPetStore.map((pet) =>
-      pet.id === pet_id ? { ...pet, isAdopted: true } : pet
-    );
-    setMyPetStore(updatedPets);
-  };
-
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
-
-  const types = [
-    "Alaskan Malamute",
-    "Tibetan Mastiff",
-    "German Shepherd",
-    "Rhodesian Ridgeback",
-    "Shiba Inu",
-    "Border Collie",
-    "Kangal Shepherd",
-    "Labrador Retriever",
-    "French Bulldog",
-    "Boerboel",
-  ];
-
-  const locations = [
-    "Lagos, Nigeria",
-    "Abuja, Nigeria",
-    "Jos, Nigeria",
-    "Port-Harcourt, Nigeria",
-    "Kano, Nigeria",
-    "Owerri, Nigeria",
-  ];
-
-  // Refactored filtering logic using switch
-  const filteredPets = myPetStore.filter((pet) => {
-    let matchesType = true;
-    let matchesLocation = true;
-
-    switch (true) {
-      case selectedType !== "" && pet.type === selectedType:
-        matchesType = true;
-        break;
-      case selectedType !== "" && pet.type !== selectedType:
-        matchesType = false;
-        break;
-      default:
-        matchesType = selectedType === "";
-    }
-
-    switch (true) {
-      case selectedLocation !== "" &&
-        pet.location.trim().toLowerCase() ===
-          selectedLocation.trim().toLowerCase():
-        matchesLocation = true;
-        break;
-      case selectedLocation !== "" &&
-        pet.location.trim().toLowerCase() !==
-          selectedLocation.trim().toLowerCase():
-        matchesLocation = false;
-        break;
-      default:
-        matchesLocation = selectedLocation === "";
-    }
-
-    return matchesType && matchesLocation;
-  });
-
   return (
-    <>
-      <div className="mt-20 mx-auto">
-        <h1 className="md:text-2xl lg:text-4xl text-purple-950 text-center font-bold m-5">
-          CNED PET STORES
-        </h1>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route
+            path="/"
+            element={
+              <div className="container mx-auto" style={{ height: "100vh" }}>
+                <h1 className="mt-20 text-2xl text-green-800 font-semibold">
+                  Welcome
+                </h1>
+              </div>
+            }
+          />
+          <Route path="about-us" element={<About />} />
+          <Route path="contact-us" element={<Contact />} />
 
-        {/* Dropdown Filters */}
-        <div className=" mx-auto container flex flex-wrap gap-4 mb-6 justify-center lg:justify-end">
-          {/* Pet Type Filter */}
-          <FormControl sx={{ width: 250 }}>
-            <InputLabel id="pet-type-label">Pet Type</InputLabel>
-            <Select
-              labelId="pet-type-label"
-              id="pet-type-select"
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value)}
-              input={<OutlinedInput label="Pet Type" />}
-              MenuProps={MenuProps}
-            >
-              <MenuItem value="">
-                <em>All Types</em>
-              </MenuItem>
-              {types.map((type) => (
-                <MenuItem
-                  key={type}
-                  value={type}
-                  style={getStyles(type, selectedType, theme)}
-                >
-                  {type}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <Route path="dashboard">
+            <Route index element={<Dashboard />} />
+            <Route path="account-setting" element={<AccountSettings />} />
+          </Route>
 
-          {/* Location Filter */}
-          <FormControl sx={{ width: 250 }}>
-            <InputLabel id="location-label">Location</InputLabel>
-            <Select
-              labelId="location-label"
-              id="location-select"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              input={<OutlinedInput label="Location" />}
-              MenuProps={MenuProps}
-            >
-              <MenuItem value="">
-                <em>All Locations</em>
-              </MenuItem>
-              {locations.map((loc) => (
-                <MenuItem
-                  key={loc}
-                  value={loc}
-                  style={getStyles(loc, selectedLocation, theme)}
-                >
-                  {loc}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </div>
+          {/* Setting up a dynamic page */}
+          <Route path="store">
+            <Route index element={<Store />} />
+            <Route path=":petId" element={<PetDetails />} />
+          </Route>
 
-        {/* Pet List Component */}
-        <PetList
-          handlePetAdoption={handlePetAdoption}
-          petsToDisplay={filteredPets}
-        />
-
-        {/* Display filtered pets */}
-        <ul className="mt-4 text-center">
-          {filteredPets.length > 0 ? (
-            filteredPets.map((pet) => (
-              <li key={pet.id}>{pet.isAdopted ? "(Adopted)" : ""}</li>
-            ))
-          ) : (
-            <li>No pets found</li>
-          )}
-        </ul>
-      </div>
-    </>
+          <Route
+            path="*"
+            element={
+              <div
+                className="container mx-auto mt-20"
+                style={{ height: "100vh" }}
+              >
+                <h2 className="text-2xl text-red-600 font-semibold">
+                  Error 404
+                </h2>
+                <p className="text-red-600">Page does not exist</p>
+              </div>
+            }
+          />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
