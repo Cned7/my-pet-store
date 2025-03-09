@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import AccountSettings from "./pages/AccountSettings.jsx";
 import PetDetails from "./pages/PetDetails.jsx";
 import Store from "./pages/Store.jsx";
+import ProtectedLayout from "./layouts/ProtectedLayouts.jsx";
 
 import React from "react";
 
@@ -28,7 +29,7 @@ function App() {
           <Route path="about-us" element={<About />} />
           <Route path="contact-us" element={<Contact />} />
 
-          <Route path="dashboard">
+          <Route path="dashboard" element={<ProtectedLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="account-setting" element={<AccountSettings />} />
           </Route>
