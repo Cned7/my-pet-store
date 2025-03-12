@@ -1,7 +1,7 @@
 function Footer() {
   return (
     <div
-      className="flex gap-7 bg-green-800 text-white bottom-0 items-center"
+      className="flex gap-7 bg-green-800 text-white bottom-0 fixed items-center"
       style={{ width: "100%", height: 70 }}
     >
       <span className="mx-auto flex gap-10 font-semibold">

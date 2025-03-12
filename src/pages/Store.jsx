@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PetList from "../components/PetList.jsx";
 import { PETS } from "../components/data.js";
+import { UserContext } from "../components/context/UserContextProvider.jsx";
 import {
   Select,
   OutlinedInput,
@@ -24,6 +25,7 @@ function Store() {
   const theme = useTheme();
   const [selectedType, setSelectedType] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
+  const { user } = useContext(UserContext);
 
   const handlePetAdoption = (pet_id) => {
     const updatedPets = myPetStore.map((pet) =>
@@ -101,10 +103,13 @@ function Store() {
 
   return (
     <>
-      <div className="mt-20 mx-auto">
+      <div className="mt-20 mx-auto container">
         <h1 className="md:text-2xl lg:text-4xl text-purple-950 text-center font-bold m-5">
-          CNED PET STORES
+          Welcome {user.name}
         </h1>
+        <p className="text-green-800 font-semibold text-xl">
+          Please adopt your favourite pets!
+        </p>
 
         {/* Dropdown Filters */}
         <div className=" mx-auto container flex flex-wrap gap-4 mb-6 justify-center lg:justify-end">

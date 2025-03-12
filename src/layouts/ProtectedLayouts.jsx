@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Navigate, Outlet } from "react-router";
 
 function ProtectedLayout() {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true);
 
   if (isUserLoggedIn === false) {
     return <Navigate to={"/"} />;
