@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router";
 import PetList from "../components/PetList.jsx";
 import { PETS } from "../components/data.js";
 import { UserContext } from "../components/context/UserContextProvider.jsx";
@@ -26,6 +27,7 @@ function Store() {
   const [selectedType, setSelectedType] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
   const { user } = useContext(UserContext);
+  const navigate = useNavigate()
 
   const handlePetAdoption = (pet_id) => {
     const updatedPets = myPetStore.map((pet) =>
@@ -104,6 +106,7 @@ function Store() {
   return (
     <>
       <div className="mt-20 mx-auto container">
+        <button onClick={() => navigate(- 1)} className="bg-green-600 rounded px-4 py-2 text-green-50 cursor-pointer">Back</button>
         <h1 className="md:text-2xl lg:text-4xl text-purple-950 text-center font-bold m-5">
           Welcome {user.name}
         </h1>
